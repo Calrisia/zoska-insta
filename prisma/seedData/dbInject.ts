@@ -1,16 +1,10 @@
 // npm install --save-dev tsx
-
 // npx tsx prisma/seedData/dbInject.ts
-
-
 import fs from 'fs';
 import { PrismaClient } from '@prisma/client';
-
 const prisma = new PrismaClient();
-
 async function seed() {
     const data = JSON.parse(fs.readFileSync('prisma/seedData/seed-data.json', 'utf8'));
-
   // Insert Users, Profiles, and Posts into your DB
   // Because of relations, we can create them in the correct order or use createMany.
   for (const item of data) {
@@ -26,7 +20,6 @@ async function seed() {
         updatedAt: item.updatedAt
       }
     });
-
     // Create profile
     if (item.profile) {
       await prisma.profile.create({
@@ -42,7 +35,6 @@ async function seed() {
         }
       });
     }
-
     // Create posts
     if (item.posts && item.posts.length > 0) {
       await prisma.post.createMany({
@@ -57,10 +49,8 @@ async function seed() {
       });
     }
   }
-
   console.log('Database seeded successfully!');
 }
-
 seed().catch((e) => {
   console.error(e);
   process.exit(1);

@@ -1,21 +1,20 @@
-// src/sections/SignInView.tsx
-
 "use client";
 
 import {
-    Button,
-    //Checkbox,
-    Container,
-    //FormControlLabel,
-    //TextField,
-    Typography,
-    //Divider,
-  } from "@mui/material";
-  import { signIn } from "next-auth/react";
-  import GoogleIcon from "@mui/icons-material/Google";
-  //import FacebookIcon from "@mui/icons-material/Facebook";
+  Button,
+  Container,
+  Typography,
+} from "@mui/material";
+import { signIn } from "next-auth/react";
+import GoogleIcon from "@mui/icons-material/Google";
+import Link from "next/link";
 
 export default function SignInView() {
+  const handleSignIn = () => {
+    const baseUrl = window.location.origin;
+    signIn("google", {callbackUrl: `${baseUrl}/prispevok`,});
+  };
+
   return (
     <Container
       maxWidth="xs"
@@ -35,20 +34,24 @@ export default function SignInView() {
         Prihlásenie
       </Typography>
 
-      {/* Google Sign Up */}
+
+      <Typography variant="body1" sx={{ mb: 6 }}>
+        Nemáte účet?{" "}
+        <Link href="/auth/registracia" style={{ color: "blue", textDecoration: "underline" }}>
+          Zaregistrujte sa
+        </Link>
+      </Typography>
+
+      {/* Google Sign In */}
       <Button
         variant="outlined"
         fullWidth
         startIcon={<GoogleIcon />}
-        onClick={() => signIn("google")}
+        onClick={handleSignIn}
         sx={{ mb: 1 }}
       >
         Prihlásiť sa účtom Google
       </Button>
-
-
     </Container>
   );
 }
-
-

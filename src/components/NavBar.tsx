@@ -1,7 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { BottomNavigation, BottomNavigationAction, Box, Avatar, IconButton } from "@mui/material";
+import {
+  BottomNavigation,
+  BottomNavigationAction,
+  Box,
+  Avatar,
+  IconButton,
+} from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import SearchIcon from "@mui/icons-material/Search";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
@@ -12,19 +18,18 @@ import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Brightness7Icon from "@mui/icons-material/Brightness7"; // Sun icon
 import Brightness4Icon from "@mui/icons-material/Brightness4"; // Moon icon
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation"; // usePathname to detect the current route
 import { useSession } from "next-auth/react";
 import { useThemeToggle } from "../components/ThemeProvider"; // Use the theme toggle hook
 
 export default function Navbar() {
-  const [value, setValue] = React.useState<string>("/");
   const [isSun, setIsSun] = React.useState(true); // State for sun/moon toggle
   const toggleTheme = useThemeToggle(); // Theme toggle function
   const router = useRouter();
+  const pathname = usePathname(); // Get the current route
   const { data: session, status } = useSession();
 
   const handleNavigation = (event: React.SyntheticEvent, newValue: string) => {
-    setValue(newValue);
     if (
       !session &&
       newValue !== "/auth/registracia" &&
@@ -56,9 +61,9 @@ export default function Navbar() {
 
   // Authenticated navigation paths
   const authPaths = [
-    { label: "Domov", value: "/", icon: <HomeIcon /> },
+    { label: "Domov", value: "/prispevok", icon: <HomeIcon /> },
     { label: "Hľadať", value: "/hladat", icon: <SearchIcon /> },
-    { label: "Pridať", value: "/prispevok", icon: <AddCircleIcon /> },
+    { label: "Pridať", value: "/pridat", icon: <AddCircleIcon /> },
     {
       label: "Profil",
       value: "/profile",
@@ -75,13 +80,20 @@ export default function Navbar() {
 
   return (
     <Box sx={{ width: "100%", position: "fixed", bottom: 0 }}>
-      <BottomNavigation showLabels value={value} onChange={handleNavigation}>
+      <BottomNavigation
+        showLabels
+        value={pathname} // Use the current path as the selected value
+        onChange={handleNavigation}
+      >
         {navigationPaths.map((path) => (
           <BottomNavigationAction
             key={path.value}
             label={path.label}
             value={path.value}
             icon={path.icon}
+            sx={{
+              color: pathname === path.value ? "blue" : "inherit", // Highlight the active icon
+            }}
           />
         ))}
         {/* Sun/Moon Toggle */}
