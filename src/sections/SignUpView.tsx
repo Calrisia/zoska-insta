@@ -19,16 +19,16 @@ export default function SignUpView() {
   const [baseUrl, setBaseUrl] = useState("");
 
   useEffect(() => {
-    setBaseUrl(window.location.origin); // This ensures baseUrl is set only on the client
+    setBaseUrl(window.location.origin);
   }, []);
 
   const handleSignUp = () => {
     if (!gdprChecked) {
-      setShowAlert(true); // Show alert if GDPR is not checked
+      setShowAlert(true);
       return;
     }
 
-    setShowAlert(false); // Hide alert if GDPR is checked
+    setShowAlert(false);
     signIn("google", { callbackUrl: `${baseUrl}/prispevok` });
   };
 
@@ -59,7 +59,7 @@ export default function SignUpView() {
         </Link>
       </Typography>
 
-      {/* GDPR and Terms Consent */}
+      {/* GDPR Consent */}
       <FormControlLabel
         control={
           <Checkbox
@@ -73,10 +73,10 @@ export default function SignUpView() {
             Súhlas s{" "}
             <Link href="/gdpr" style={{ color: "blue", textDecoration: "underline" }}>
               GDPR
-            </Link>{" "}
-            a{" "}
-            <Link href="/podmienky" style={{ color: "blue", textDecoration: "underline" }}>
-              podmienkami používania
+            </Link>
+            {" "}a{" "}
+            <Link href="/TOS" style={{ color: "blue", textDecoration: "underline" }}>
+              TOS
             </Link>
           </Typography>
         }
@@ -98,7 +98,7 @@ export default function SignUpView() {
           }}
         >
           <Typography>
-            Prosím, súhlaste s podmienkami GDPR a podmienkami používania pred pokračovaním.
+            Prosím, súhlaste s podmienkami GDPR pred pokračovaním.
           </Typography>
         </Box>
       )}
